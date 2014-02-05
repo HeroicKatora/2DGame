@@ -1,5 +1,6 @@
 package core;
 
+import java.awt.Graphics;
 import java.awt.Point;
 import java.io.Serializable;
 
@@ -35,6 +36,10 @@ public abstract class GameCreature implements DisplayedObject, Serializable{
     public abstract void onDeath(GameMap map);
     public void onRemoveCreature(GameMap map){
 	this.map = null;
+    }
+    @Override
+    public void paint(Graphics g){
+	//draw the base for every creature
     }
 
 }

@@ -11,7 +11,7 @@ public class GamePlayer extends GameCreature {
 
     private final String name;
     /*
-     *  * 
+     *  *
      */
     private static final long serialVersionUID = "GamePlayer".hashCode();
     public GamePlayer(String name){
@@ -20,15 +20,15 @@ public class GamePlayer extends GameCreature {
 
     @Override
     public Image getImage() {
-		Image img = (Image) FileBuffer.getBuffer("resources/creatures/PlayerBase.png").getData(new DescriptionImage());
-		/*if(img != null){
+	Image img = (Image) FileBuffer.getBuffer("resources/creatures/PlayerBase.png").getData(new DescriptionImage());
+	/*if(img != null){
 		    Graphics2D g = (Graphics2D) img.getGraphics();
 		    g.setColor(Color.BLACK);
 		    g.drawString(name, 10, 10);
 		    //TODO realign character name
 		}*/
 	return img;
-	
+
     }
 
     @Override
@@ -52,12 +52,12 @@ public class GamePlayer extends GameCreature {
 	System.out.println("A player has been removed");
     }
 
-	@Override
-	public void paint(Graphics g) {
-		g.drawImage(getImage(), position.x, position.y, null);
-		g.setColor(Color.red);
-		System.out.println(name);
-		g.drawString(name, 20, 20);
-	}
+    @Override
+    public void paint(Graphics g) {
+	super.paint(g);
+	g.drawImage(getImage(), position.x, position.y, null);
+	g.setColor(Color.red);
+	g.drawString(name, 20, 20);
+    }
 
 }
