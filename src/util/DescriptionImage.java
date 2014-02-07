@@ -2,25 +2,19 @@ package util;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class DescriptionImage extends DescriptionObject{
+public class DescriptionImage extends DescriptionObject<Image>{
 
-    public DescriptionImage() {
-	super(DescriptionObject.TYPE_IMAGE);
-    }
+	public DescriptionImage() {
+		super(DescriptiveType.TYPE_IMAGE);
+	}
 
-    @Override
-    public Object getData(File f) {
-	Image img;
-	img = (Image) Toolkit.getDefaultToolkit().createImage(f.getAbsolutePath());
-	return img;
-    }
-
-    @Override
-    public Class<? extends Object> getDescribedClass() {
-	return BufferedImage.class;
-    }
+	@Override
+	public Image getData(File f) {
+		Image img;
+		img = (Image) Toolkit.getDefaultToolkit().createImage(f.getAbsolutePath());
+		return img;
+	}
 
 }
