@@ -6,15 +6,20 @@ import java.io.File;
 
 public class DescriptionImage extends DescriptionObject<Image>{
 
-	public DescriptionImage() {
-		super(DescriptiveType.TYPE_IMAGE);
-	}
+    public DescriptionImage() {
+	super(DescriptionObject.DescriptionType.TYPE_IMAGE);
+    }
 
-	@Override
-	public Image getData(File f) {
-		Image img;
-		img = (Image) Toolkit.getDefaultToolkit().createImage(f.getAbsolutePath());
-		return img;
-	}
+    @Override
+    public Image getData(File f) {
+	Image img;
+	img = (Image) Toolkit.getDefaultToolkit().createImage(f.getAbsolutePath());
+	return img;
+    }
+
+    @Override
+    public Class<? extends Object> getDescribedClass() {
+	return Image.class;
+    }
 
 }

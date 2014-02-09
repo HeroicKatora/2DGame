@@ -15,7 +15,7 @@ import java.util.HashMap;
  * 
  * As a second optional argument, a default String can be defined that will be returned as
  * the option value when there is no value found in the file. You will also retrieve the
- * pair: regex -> defaultString when no occurrence is found. Default is an empty String.
+ * pair: regex -> defaulString when no occurrence is found. Default is an empty String.
  * 
  * Also, you can afterwards give pairs each consisting of a regular expressions and a String
  * which define a replacement pattern. Every occurrence of the regular expression will be
@@ -25,68 +25,76 @@ import java.util.HashMap;
  *
  */
 public class DescriptionConfig extends DescriptionObject<HashMap<String, String>>{
-	private String[] options;
+    private String[] options;
 
-	public DescriptionConfig(String... options){
-		super(DescriptiveType.TYPE_CONFIG);
-		this.options = new String[options.length+options.length%2];
-		for(int i = 0;i<this.options.length;i++){
-			if(i>=options.length) this.options[i]="";
-			else this.options[i]=options[i];
-		}
+    public DescriptionConfig(String... options){
+	super(DescriptionObject.DescriptionType.TYPE_CONFIG);
+	this.options = new String[options.length+options.length%2];
+	for(int i = 0;i<this.options.length;i++){
+	    if(i>=options.length) this.options[i]="";
+	    else this.options[i]=options[i];
 	}
+    }
 
-	@Override
-	public HashMap<String, String> getData(File f) {
-		String line = "";
-		HashMap<String, String> configs = new HashMap<String, String>();
-		try(BufferedReader in = new BufferedReader(new FileReader(f))) {
-			line = in.readLine();
-			while(line != null){
-				if(!(line.startsWith("#")||line.startsWith("--")||line.startsWith("//"))){
-					int firstIndex = line.indexOf("=");
-					String option = line.substring(0, firstIndex).trim();
-					if(option != ""){
-						String resolvedString = line.substring(firstIndex+1).trim();
-						if(resolvedString.equals("")){
-							if(options.length > 1)resolvedString = options[1];
-						}
-						if(options.length > 0 ){
-							if(option.matches(options[0])){
-								for(int i = 2;i<options.length;i+=2){
-									resolvedString = resolvedString.replaceAll(options[i], options[i+1]);
-								}
-								configs.put(option, resolvedString);
-							}
-						}else{
-							configs.put(option, resolvedString);
-						}
-					}
-				}
-				line = in.readLine();
+    @Override
+    public HashMap<String, String> getData(File f) {
+	String line = "";
+	HashMap<String, String> configs = new HashMap<String, String>();
+	FileReader fIn;
+	try {
+	    fIn = new FileReader(f);
+	    BufferedReader in = new BufferedReader(fIn);
+	    line = in.readLine();
+	    while(line != null){
+		if(!(line.startsWith("#")||line.startsWith("--")||line.startsWith("//"))){
+		    int firstIndex = line.indexOf("=");
+		    String option = line.substring(0, firstIndex).trim();
+		    if(option != ""){
+			String resolvedString = line.substring(firstIndex+1).trim();
+			if(resolvedString.equals("")){
+			    if(options.length > 1)resolvedString = options[1];
 			}
-//			fIn.close();
-		}catch (FileNotFoundException e) {
-			System.out.println("File was not found!");
+			if(options.length > 0 ){
+			    if(option.matches(options[0])){
+				for(int i = 2;i<options.length;i+=2){
+				    resolvedString = resolvedString.replaceAll(options[i], options[i+1]);
+				}
+				configs.put(option, resolvedString);
+			    }
+			}else{
+			    configs.put(option, resolvedString);
+			}
+		    }
 		}
-		catch (IOException e) {
-			System.out.println("I/O is faulty");
-		}
-		if(configs.isEmpty() && options.length > 1) configs.put(options[0], options[1]);
-		return configs;
+		line = in.readLine();
+	    }
+	    fIn.close();
+	}catch (FileNotFoundException e) {
+	    System.out.println("File was not found!");
 	}
+	catch (IOException e) {
+	    System.out.println("I/O is faulty");
+	}
+	if(configs.isEmpty() && options.length > 1) configs.put(options[0], options[1]);
+	return configs;
+    }
 
-	public String[] getOptions() {
-		return options;
-	}
+    @Override
+    public Class<? extends Object> getDescribedClass() {
+	return new HashMap<String, String>().getClass();
+    }
 
-	@Override
-	public int hashCode() {
-		int hash = options.length;
-		for(int i = 0;i<options.length;i++){
-			hash += options[i]==null?0:options[i].hashCode();
-		}
-		return super.hashCode()+hash;
+    public String[] getOptions() {
+	return options;
+    }
+
+    @Override
+    public int hashCode() {
+	int hash = options.length;
+	for(int i = 0;i<options.length;i++){
+	    hash += options[i]==null?0:options[i].hashCode();
 	}
+	return super.hashCode()+hash;
+    }
 
 }
