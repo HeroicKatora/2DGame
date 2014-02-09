@@ -3,7 +3,9 @@ package ui;
 import javax.swing.JPanel;
 
 public abstract class GameMenu extends JPanel{
-    public enum Direction{UP, RIGHT, DOWN, LEFT};
+
+    public enum Direction{UP, RIGHT, DOWN, LEFT}
+    private static final long serialVersionUID = "GameMenu".hashCode();;
     protected int selected;
     protected boolean active;
 
